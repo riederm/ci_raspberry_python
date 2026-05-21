@@ -41,29 +41,18 @@ Inhalte eingehängt werden können.
   - PRs brauchen **mindestens einen erfolgreichen CI-Lauf** (Build, Tests, Checks),
   - optional: mindestens ein Review erforderlich.
 
-### 2. C/C++ Teil (für Raspberry Pi)
+### 2. C/C++ Teil
 
-Der C/C++ Teil wird mit **CMake** gebaut. Du kannst wählen:
-
-- **Variante A:** Build direkt auf einem Raspberry Pi.
-- **Variante B:** Build auf deinem PC, z. B. über einen **Devcontainer** mit
-  Cross-Compile-Toolchain (`aarch64-linux-gnu-gcc` o. ä.).
-
-Liefere eine kleine Beispielanwendung (z. B. *Blink*, *Hello GPIO*, oder ein
-einfaches Sensor-Read), die zeigt, dass die Toolchain funktioniert.
+Der C/C++ Teil wird mit **CMake** gebaut. Der Code soll einige (wenigstens beispielhafte) Unit-Tests beinhalten.
 
 Folgende `make`-Targets sollen vorhanden sein und intern CMake aufrufen:
 
 | Target        | Aufgabe                                                              |
 |---------------|----------------------------------------------------------------------|
 | `make build`  | Konfiguriert und baut das C/C++ Projekt mit CMake.                   |
-| `make test`   | Führt die C/C++ Unit-Tests aus (z. B. mit GoogleTest oder Catch2).   |
+| `make test`   | Führt die C/C++ Unit-Tests aus (z. B. mit Unity, GoogleTest oder Catch2).   |
 | `make clean`  | Entfernt sämtliche Build-Artefakte.                                  |
 | `make check`  | Führt eine **statische Code-Analyse** aus (z. B. `clang-tidy`, `cppcheck`). |
-| `make run`    | **Deployt** das Binary auf den Pi (z. B. via `scp`) und **führt es aus** (`ssh`). |
-
-> Hinweis: `make run` darf voraussetzen, dass eine Variable wie `PI_HOST=pi@raspberrypi.local`
-> gesetzt ist. Dokumentier das im Repo.
 
 ### 3. Python Teil
 
@@ -71,22 +60,22 @@ Der Python Teil wird ebenfalls über `make` angesprochen. Mindestens diese Targe
 
 | Target        | Aufgabe                                                |
 |---------------|--------------------------------------------------------|
-| `make run`    | Führt das Python-Projekt aus (Einstiegspunkt).         |
+| `make check`    | Führt eine **statische Code-Analyse** aus (z. B. `Ruff`, `Pylint`). |
 | `make test`   | Führt die Python Unit-Tests aus (z. B. `pytest`).      |
 
-Sorg dafür, dass Abhängigkeiten reproduzierbar installiert werden
+Sorg dafür, dass Abhängigkeiten von make installiert werden
 (`requirements.txt`, `pyproject.toml` o. ä.).
 
 ### 4. Continuous Integration mit GitHub Actions
 
-Leg einen Workflow unter `.github/workflows/ci.yml` an, der **bei jedem Pull Request**
+Leg einen Workflow unter `.github/workflows/` an, der **bei jedem Pull Request**
 und **bei Pushes auf `main`** Folgendes ausführt:
 
-1. **Build** des C/C++ Teils (Cross-Compile reicht – der Pi muss in CI nicht laufen).
+1. **Build** des C/C++ Teils
 2. **Unit-Tests** des C/C++ Teils.
 3. **Statische Analyse** (`make check`) für den C/C++ Teil.
 4. **Unit-Tests** des Python Teils.
-5. (Optional, empfohlen) **Linter** für Python (`ruff`, `flake8`, …).
+5. **Statische Analyse** des Python Teils.
 
 Der Workflow muss in der GitHub-Oberfläche für jeden PR sichtbares **Feedback** geben
 (grün/rot, Logs einsehbar). Schlägt ein Schritt fehl, darf der PR **nicht mergebar** sein.
@@ -95,7 +84,7 @@ Der Workflow muss in der GitHub-Oberfläche für jeden PR sichtbares **Feedback*
 
 ## Abgabe
 
-Gib ab:
+Gib ab: am Tag der Klausur + 1 Woche (02. Juli 2026)
 
 1. **Link zum GitHub-Repository.**
 2. **Link zu mindestens einem PR**, der erfolgreich durch die CI gegangen ist.
@@ -110,17 +99,14 @@ Gib ab:
 ---
 
 ## Hinweise und Stolpersteine
-
-- **Cross-Compile vs. native Build:** Wenn du auf dem PC baust, achte darauf,
-  dass das Binary tatsächlich auf `aarch64` / `armv7` (je nach Pi-Modell) zielt.
-  `file ./meinbinary` zeigt die Architektur an.
-- **GoogleTest in CMake:** `FetchContent` oder ein vorinstalliertes Paket – beides ist
+- **Dependencies in CMake:** `FetchContent` oder ein vorinstalliertes Paket – beides ist
   okay, aber dokumentier deine Wahl.
-- **`make run` für den Pi:** In CI **nicht** ausführen – CI hat keinen Pi. Schütz
-  das Target z. B. durch eine Variable oder lass CI nur `build`, `test`, `check` aufrufen.
+- **`make` für den Pi:** Der build muss nicht fuer die genaue Architektur des Pi durchgefuhrt werden (keine Virtualisierung bzw. Cross-compile notwendig)
 - **Branch Protection:** Diese Regel wird in den GitHub-Repo-Einstellungen gesetzt,
   nicht im Code. Pack einen Screenshot oder eine kurze Notiz zur Abgabe dazu.
 - **Reproduzierbarkeit:** Wer nach `git clone` + `make test` ein grünes Ergebnis bekommt,
   hat einen großen Teil der Aufgabe schon richtig gelöst.
+- **AI-Hilfe** AI Unterstuetzung ist erlaubt - die Tools sind eine echte Hilfe. Wer jedoch alles von der AI machen laesst, lernt halt nichts :-1:.
+
 
 Viel Erfolg!
