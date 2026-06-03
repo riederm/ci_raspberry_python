@@ -92,21 +92,18 @@ Gib ab: am Tag der Klausur + 1 Woche (02. Juli 2026)
    test oder lint-Verstoß) **rot** war – inklusive Folge-Commit, der das Problem behebt.
    Damit zeigst du, dass die CI nicht nur "grün durchwinkt".
 4. Eine kurze **README.md** im Repository, die erklärt:
+   - welche make-targets existieren, was wird dort ausgefuehrt
    - wie man das Projekt lokal baut und testet,
-   - wie der Devcontainer / die Cross-Compile-Toolchain genutzt wird (falls Variante B),
-   - wie `make run` für den Pi konfiguriert wird (`PI_HOST` o. ä.).
-
+   - ‼️ **dein Klarname** ‼️
 ---
 
 ## Hinweise und Stolpersteine
 - **Dependencies in CMake:** `FetchContent` oder ein vorinstalliertes Paket – beides ist
-  okay, aber dokumentier deine Wahl.
-- **`make` für den Pi:** Der build muss nicht fuer die genaue Architektur des Pi durchgefuhrt werden (keine Virtualisierung bzw. Cross-compile notwendig)
+  okay, aber dokumentiere deine Wahl in der README.md.
 - **Branch Protection:** Diese Regel wird in den GitHub-Repo-Einstellungen gesetzt,
   nicht im Code. Pack einen Screenshot oder eine kurze Notiz zur Abgabe dazu.
 - **Reproduzierbarkeit:** Wer nach `git clone` + `make test` ein grünes Ergebnis bekommt,
   hat einen großen Teil der Aufgabe schon richtig gelöst.
 - **AI-Hilfe** AI Unterstuetzung ist erlaubt - die Tools sind eine echte Hilfe. Wer jedoch alles von der AI machen laesst, lernt halt nichts :-1:.
-
 
 Viel Erfolg!
